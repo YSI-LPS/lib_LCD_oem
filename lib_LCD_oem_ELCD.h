@@ -1,6 +1,8 @@
 /** LCD oem ELCD class
 *  Utilisée pour écrire sur l'afficheur oem ELCD 4x20.
 *
+* Copyright (c) 2014, cstyles (http://mbed.org)
+*
 * Exemple:
 * @code
 * #include "mbed.h"
@@ -19,6 +21,10 @@
 *	}
 * }
 * @endcode
+* @file          lib_LCD_oem_ELDC.h 
+* @purpose       library for oem ELCD
+* @date          Jan 2014
+* @author        Yannic Simon
 */
 
 #ifndef DEF_lib_LCD_OEM_ELCD_H
