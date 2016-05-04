@@ -1,3 +1,33 @@
+/** LCD oem ELCD class
+*
+* @purpose       library for oem ELCD
+*
+*  Utilisée pour écrire sur l'afficheur oem ELCD 4x20.
+*
+* Copyright (c) 2014, cstyles (http://mbed.org)
+*
+* Exemple:
+* @code
+* #include "mbed.h"
+* #include "lib_LCD_oem_ELCD.h"
+*
+* LCD_OEM LCD(p13);	 //Tx
+* 
+* int main() {
+* int i=0;
+*	while(1)
+*	{
+*		LCD.clear();
+*		LCD.print(i++);
+*		if(i>9999) i=0;
+*		wait(0.25);
+*	}
+* }
+* @endcode
+* @file          lib_LCD_oem_ELDC.h 
+* @date          Jan 2014
+* @author        Yannic Simon
+*/
 #include "lib_LCD_oem_ELCD.h"
 
 #define lcd_soft_boot	0xA0
