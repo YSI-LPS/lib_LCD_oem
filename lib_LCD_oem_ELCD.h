@@ -32,7 +32,8 @@
 
 #include "mbed.h"
 
-
+/** LCD_OEM class
+ */
 class LCD_OEM : public Serial
 {
 public:
