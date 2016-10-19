@@ -1,33 +1,3 @@
-/** LCD oem ELCD class
-*
-* @purpose       library for oem ELCD
-*
-*  Utilisée pour écrire sur l'afficheur oem ELCD 4x20.
-*
-* Copyright (c) 2014, cstyles (http://mbed.org)
-*
-* Exemple:
-* @code
-* #include "mbed.h"
-* #include "lib_LCD_oem_ELCD.h"
-*
-* LCD_OEM LCD(p13);	 //Tx
-* 
-* int main() {
-* int i=0;
-*	while(1)
-*	{
-*		LCD.clear();
-*		LCD.print(i++);
-*		if(i>9999) i=0;
-*		wait(0.25);
-*	}
-* }
-* @endcode
-* @file          lib_LCD_oem_ELDC.h 
-* @date          Jan 2014
-* @author        Yannic Simon
-*/
 #include "lib_LCD_oem_ELCD.h"
 
 #define lcd_soft_boot	0xA0
@@ -71,26 +41,24 @@ void LCD_OEM::turn_on_cursor(void)
 
 void LCD_OEM::shift_line_cursor(void)
 {
-	Y_position_cursor++;
-	if(Y_position_cursor > 3)	Y_position_cursor = 0;
-	if(Y_position_cursor < 0)	Y_position_cursor = 3;
-	LCD_OEM::printf("%c%c%c", lcd_cursor_pos, X_position_cursor, Y_position_cursor);
+	if(Y_position_cursor < 3)	Y_position_cursor++;
+	LCD_OEM::printf("%c%c%c", lcd_cursor_pos, 0, Y_position_cursor);
 }
 
 void LCD_OEM::set_position_cursor(int X)
 {
-	if(X > 19)	X = 19;
-	if(X < 0)	X = 0;
+	if(X < 0)		X = 0;
+	else if(X > 19)	X = 19;
 	X_position_cursor = X;
 	LCD_OEM::printf("%c%c%c", lcd_cursor_pos, X_position_cursor, Y_position_cursor);
 }
 
 void LCD_OEM::set_position_cursor(int X, int Y)
 {
-	if(X > 19)	X = 19;
-	if(X < 0)	X = 0;
-	if(Y > 3)	Y = 3;
-	if(Y < 0)	Y = 0;
+	if(X < 0)		X = 0;
+	else if(X > 19)	X = 19;
+	if(Y < 0)		Y = 0;
+	else if(Y > 3)	Y = 3;
 	X_position_cursor = X;
 	Y_position_cursor = Y;
 	LCD_OEM::printf("%c%c%c", lcd_cursor_pos, X_position_cursor, Y_position_cursor);
@@ -136,6 +104,15 @@ void LCD_OEM::define_caractere(char c, char l1, char l2, char l3, char l4, char 
 		}
 	}
 	set_position_cursor(X_position_cursor, Y_position_cursor);
+}
+
+void LCD_OEM::putnc(char *s, int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+    	LCD_OEM::putc(s[i]);
+    }
+    X_move_position(n);
 }
 
 void LCD_OEM::print(char c)
@@ -206,10 +183,21 @@ void LCD_OEM::print(double nb)
 
 void LCD_OEM::print(char *s)
 {
-	int n = LCD_OEM::printf("%c%s%c", lcd_display, &s[0], 0) - 2;
+	int n = LCD_OEM::printf("%c%s%c", lcd_display, s, 0) - 2;
 	X_move_position(n);
 }
 
+int LCD_OEM::print(const char *s, ... )
+{
+    char buffer[256]={0x00};
+    va_list args;
+    va_start(args, s);
+    vsprintf(buffer,s,args);
+    va_end(args);
+    int n = LCD_OEM::printf("%c%s%c", lcd_display, buffer, 0) - 2;
+	X_move_position(n);
+}
+/*
 void LCD_OEM::print(char *s, short nb)
 {
 	char buffer[100] = {0};
@@ -2189,4 +2177,4 @@ void LCD_OEM::print(char *s, double nb1, double nb2, double nb3)
 	int n = sprintf(&buffer[0],&s[0],nb1,nb2,nb3);
 	print(buffer);
 
-}
+}*/

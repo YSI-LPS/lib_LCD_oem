@@ -2,7 +2,9 @@
 *
 * @purpose       library for oem ELCD
 *
-*  Utilisée pour écrire sur l'afficheur oem ELCD 4x20.
+* Utilisée pour écrire sur l'afficheur oem ELCD 4x20.
+*
+* http://www.lextronic.fr/P764-afficheur-4-x-20-caracteres-retro-eclaire-vert.html
 *
 * Copyright (c) 2014, cstyles (http://mbed.org)
 *
@@ -13,15 +15,17 @@
 *
 * LCD_OEM LCD(p13);	 //Tx
 * 
-* int main() {
-* int i=0;
-*	while(1)
-*	{
-*		LCD.clear();
-*		LCD.print(i++);
-*		if(i>9999) i=0;
-*		wait(0.25);
-*	}
+* int main()
+* {
+*   while(1)
+*   {
+*       for(int i = 0; i < 9999; i++)
+*       {
+*           LCD.clear();
+*           LCD.print(i);
+*           wait(0.25);
+*       }
+*   }
 * }
 * @endcode
 * @file          lib_LCD_oem_ELDC.h 
@@ -40,22 +44,25 @@ class LCD_OEM : public Serial
 {
 public:
 	/** Creer une instance LCD_OEM
+	*
+	* @param pin_tx par exemple p13
     */
 	LCD_OEM(PinName pin_tx);
 
 	/** Efface l'afficheur et renvoie le curseur en position X = 0 et Y = 0
 	*
 	* @param aucun
-	* @returns
-	*   aucun
+	* @returns aucun
 	*/
 	void clear(void);
+	
 	/** positionne le curseur sur la ligne
 	*
 	* @param X est la position sur la ligne (0 à 19)
 	* @returns aucun
 	*/
 	void set_position_cursor(int X);
+	
 	/** positionne le curseur horizontalement et verticalement
 	*
 	* @param X est la position sur la ligne (0 à 19)
@@ -63,36 +70,42 @@ public:
 	* @returns aucun
 	*/
 	void set_position_cursor(int X, int Y);
+	
 	/** renvoie la position horizontale du curseur
 	*
 	* @param aucun
 	* @returns X est la position sur la ligne (0 à 19)
 	*/
 	int get_X_position_cursor(void);
+	
 	/** renvoie la position verticale du curseur
 	*
 	* @param aucun
 	* @returns Y est la position sur la colone (0 à 3)
 	*/
 	int get_Y_position_cursor(void);
+	
 	/** positionne le curseur à la ligne suivante
 	*
 	* @param aucun
 	* @returns aucun
 	*/
 	void shift_line_cursor(void);
+	
 	/** active l'affichage du curseur
 	*
 	* @param aucun
 	* @returns aucun
 	*/
 	void turn_on_cursor(void);
+	
 	/** désactive l'affichage du curseur
 	*
 	* @param aucun
 	* @returns aucun
 	*/
 	void turn_off_cursor(void);
+	
 	/** redéfinit un caractère de 5x8 pixels et l'affiche
 	*
 	* @param c est le caractère à redéfinir (8 à 15)
@@ -102,6 +115,7 @@ public:
 	* @returns aucun
 	*/
 	void define_and_print_caractere(char c, char l1, char l2, char l3, char l4, char l5, char l6, char l7, char l8);
+	
 	/** redéfinit un caractère de 5x8 pixels et l'affiche
 	*
 	* @param c est le caractère à redéfinir (8 à 15)
@@ -111,11 +125,15 @@ public:
 	* @returns aucun
 	*/
 	void define_caractere(char c, char l1, char l2, char l3, char l4, char l5, char l6, char l7, char l8);
+	
 	/** affiche la variable sur l'afficheur
-	*
-	* @param la plupart des types de variables
-	* @returns aucun
-	*/	
+    *
+    * @param s la chaine de caractère à afficher
+    * @param ... les arguments à afficher
+    * @returns aucun
+    */
+	void print(const char *s, ... )
+	void print(char *s);
 	void print(char c);
     void print(char c1, char c2);
     void print(char c1, char c2, char c3);
@@ -127,10 +145,9 @@ public:
 	void print(unsigned long long nb);
 	void print(float nb);
 	void print(double nb);
-    void print(char *s);
     
     
-    void print(char *s, short nb);
+    /*void print(char *s, short nb);
     void print(char *s, short nb1, short nb2);
     void print(char *s, short nb1, unsigned short nb2);
     void print(char *s, unsigned short nb1, short nb2);
@@ -421,11 +438,12 @@ public:
     
     void print(char *s, double nb);
     void print(char *s, double nb1, double nb2);
-    void print(char *s, double nb1, double nb2, double nb3);
+    void print(char *s, double nb1, double nb2, double nb3);*/
     
     
 private :
     void init(void);
+    int putnc(char *s, int n);
     void X_move_position(int n);
     int X_position_cursor;
     int Y_position_cursor;
