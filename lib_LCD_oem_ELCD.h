@@ -37,6 +37,7 @@
 #define DEF_lib_LCD_OEM_ELCD_H
 
 #include "mbed.h"
+#include <cstdarg>
 
 /** LCD_OEM class
  */
@@ -132,7 +133,7 @@ public:
     * @param ... les arguments à afficher
     * @returns aucun
     */
-	void print(const char *s, ... )
+	void print(const char *s, ... );
 	void print(char *s);
 	void print(char c);
     void print(char c1, char c2);
@@ -145,7 +146,6 @@ public:
 	void print(unsigned long long nb);
 	void print(float nb);
 	void print(double nb);
-    
     
     /*void print(char *s, short nb);
     void print(char *s, short nb1, short nb2);
@@ -443,7 +443,7 @@ public:
     
 private :
     void init(void);
-    int putnc(char *s, int n);
+    void putnc(char *s, int n);
     void X_move_position(int n);
     int X_position_cursor;
     int Y_position_cursor;

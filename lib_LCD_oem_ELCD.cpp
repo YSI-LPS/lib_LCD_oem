@@ -187,7 +187,7 @@ void LCD_OEM::print(char *s)
 	X_move_position(n);
 }
 
-int LCD_OEM::print(const char *s, ... )
+void LCD_OEM::print(const char *s, ... )
 {
     char buffer[256]={0x00};
     va_list args;
